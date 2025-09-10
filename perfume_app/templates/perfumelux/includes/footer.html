@@ -1,0 +1,185 @@
+<footer class="neu-outset" style="margin-top: 50px; padding: 50px 0 20px;">
+    <div class="container">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px;">
+            <!-- Company info -->
+            <div>
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                    <i class="fas fa-spray-can-sparkles" style="font-size: 24px; color: var(--accent-color);"></i>
+                    <h3 style="font-size: 22px; font-weight: 700;">PerfumeLux</h3>
+                </div>
+                <p style="line-height: 1.6; margin-bottom: 20px;">Luxury fragrances for every occasion. Discover your signature scent from our curated collection.</p>
+                <div style="display: flex; gap: 15px;">
+                    <a href="#" class="btn-neu" style="padding: 10px;" aria-label="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="btn-neu" style="padding: 10px;" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="btn-neu" style="padding: 10px;" aria-label="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="btn-neu" style="padding: 10px;" aria-label="Pinterest">
+                        <i class="fab fa-pinterest-p"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick links -->
+            <div>
+                <h3 style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-link" style="color: var(--accent-color);"></i>
+                    <span>Quick Links</span>
+                </h3>
+                <ul style="list-style: none;">
+                    <li style="margin-bottom: 12px;">
+                        <a href="{% url 'product_list' %}" style="text-decoration: none; color: var(--text-color); display: flex; align-items: center; gap: 10px; transition: var(--transition);">
+                            <i class="fas fa-store" style="width: 16px;"></i>
+                            <span>Products</span>
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 12px;">
+                        <a href="{% url 'category_list' %}" style="text-decoration: none; color: var(--text-color); display: flex; align-items: center; gap: 10px; transition: var(--transition);">
+                            <i class="fas fa-tags" style="width: 16px;"></i>
+                            <span>Categories</span>
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 12px;">
+                        <a href="{% url 'about' %}" style="text-decoration: none; color: var(--text-color); display: flex; align-items: center; gap: 10px; transition: var(--transition);">
+                            <i class="fas fa-info-circle" style="width: 16px;"></i>
+                            <span>About Us</span>
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 12px;">
+                        <a href="{% url 'contact' %}" style="text-decoration: none; color: var(--text-color); display: flex; align-items: center; gap: 10px; transition: var(--transition);">
+                            <i class="fas fa-envelope" style="width: 16px;"></i>
+                            <span>Contact</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Customer service -->
+            <div>
+                <h3 style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-headset" style="color: var(--accent-color);"></i>
+                    <span>Customer Service</span>
+                </h3>
+                <ul style="list-style: none;">
+                    <li style="margin-bottom: 12px;">
+                        <a href="{% url 'shipping_policy' %}" style="text-decoration: none; color: var(--text-color); display: flex; align-items: center; gap: 10px; transition: var(--transition);">
+                            <i class="fas fa-shipping-fast" style="width: 16px;"></i>
+                            <span>Shipping Policy</span>
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 12px;">
+                        <a href="{% url 'returns_exchanges' %}" style="text-decoration: none; color: var(--text-color); display: flex; align-items: center; gap: 10px; transition: var(--transition);">
+                            <i class="fas fa-exchange-alt" style="width: 16px;"></i>
+                            <span>Returns & Exchanges</span>
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 12px;">
+                        <a href="{% url 'faq' %}" style="text-decoration: none; color: var(--text-color); display: flex; align-items: center; gap: 10px; transition: var(--transition);">
+                            <i class="fas fa-question-circle" style="width: 16px;"></i>
+                            <span>FAQ</span>
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 12px;">
+                        <a href="{% url 'privacy_policy' %}" style="text-decoration: none; color: var(--text-color); display: flex; align-items: center; gap: 10px; transition: var(--transition);">
+                            <i class="fas fa-shield-alt" style="width: 16px;"></i>
+                            <span>Privacy Policy</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Newsletter -->
+            <div>
+                <h3 style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-newspaper" style="color: var(--accent-color);"></i>
+                    <span>Newsletter</span>
+                </h3>
+                <p style="margin-bottom: 20px;">Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>
+                <form action="{% url 'newsletter_subscribe' %}" method="POST">
+                    {% csrf_token %}
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                        <input type="email" name="email" placeholder="Your email address" required class="form-control">
+                        <button type="submit" class="btn-primary" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;">
+                            <i class="fas fa-paper-plane"></i>
+                            <span>Subscribe</span>
+                        </button>
+                    </div>
+                </form>
+                <p style="margin-top: 15px; font-size: 12px; color: var(--text-muted);">
+                    <i class="fas fa-lock"></i>
+                    We respect your privacy. Unsubscribe at any time.
+                </p>
+            </div>
+        </div>
+
+        <div style="margin-top: 50px; padding-top: 25px; border-top: 1px solid var(--secondary-color);">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px;">
+                <p style="margin: 0; display: flex; align-items: center; gap: 8px;">
+                    <i class="far fa-copyright"></i>
+                    <span>{% now "Y" %} PerfumeLux. All rights reserved.</span>
+                </p>
+
+
+                <div style="display: flex; align-items: center; gap: 8px; color: var(--text-muted);">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Secure Payment</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<style>
+    /* Footer specific styles */
+    footer a:hover {
+        color: var(--accent-color) !important;
+    }
+
+    footer .btn-neu {
+        transition: var(--transition);
+    }
+
+    footer .btn-neu:hover {
+        transform: translateY(-2px);
+        box-shadow: 5px 5px 15px var(--shadow-dark),
+                    -5px -5px 15px var(--shadow-light);
+    }
+
+    /* Responsive footer */
+    @media (max-width: 768px) {
+        footer {
+            padding: 30px 0 15px !important;
+        }
+
+        footer > .container > div:first-child {
+            gap: 30px;
+        }
+
+        .footer-bottom {
+            flex-direction: column;
+            text-align: center;
+            gap: 15px !important;
+        }
+
+        .footer-bottom > div {
+            justify-content: center;
+        }
+    }
+
+    @media (max-width: 480px) {
+        footer > .container > div:first-child {
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .footer-links {
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px !important;
+        }
+    }
+</style>

@@ -1,0 +1,105 @@
+<div class="quick-view-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;">
+    <div class="neu-outset" style="background: var(--primary-color); width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto; border-radius: 20px; padding: 30px; position: relative;">
+        <button onclick="closeQuickView()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+            <!-- Product Image -->
+            <div>
+                {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; border-radius: 15px;">
+                {% else %}
+                <div style="width: 100%; height: 300px; background: var(--secondary-color); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                    <span>No Image Available</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Product Info -->
+            <div>
+                <h2 style="margin-bottom: 15px;">{{ product.name }}</h2>
+
+                <!-- Rating -->
+                {% if product.avg_rating %}
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                    <div style="display: flex;">
+                        {% for i in "12345" %}
+                        {% if forloop.counter <= product.avg_rating %}
+                        <span>⭐</span>
+                        {% else %}
+                        <span>☆</span>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    <span>({{ product.reviews.count }} reviews)</span>
+                </div>
+                {% endif %}
+
+                <!-- Price -->
+                <div style="margin-bottom: 25px;">
+                    <span style="font-size: 24px; font-weight: 700; color: var(--accent-color);">${{ product.price }}</span>
+                </div>
+
+                <!-- Short Description -->
+                <div style="margin-bottom: 25px;">
+                    <p>{{ product.description|truncatewords:30 }}</p>
+                </div>
+
+                <!-- Add to cart -->
+                <div style="display: flex; gap: 15px; margin-bottom: 30px;">
+                    <div class="neu-outset" style="display: flex; align-items: center; border-radius: 10px; padding: 5px;">
+                        <button onclick="updateQuickViewQuantity(-1)" style="background: none; border: none; padding: 10px; cursor: pointer;">-</button>
+                        <input type="number" id="quick-view-quantity" value="1" min="1" style="width: 50px; text-align: center; border: none; background: transparent;">
+                        <button onclick="updateQuickViewQuantity(1)" style="background: none; border: none; padding: 10px; cursor: pointer;">+</button>
+                    </div>
+                    <button class="btn-primary add-to-cart-btn" data-product-id="{{ product.id }}" style="flex: 1;">
+                        Add to Cart
+                    </button>
+                    <button class="btn-neu wishlist-toggle" data-product-id="{{ product.id }}" style="padding: 15px;">
+                        ❤️
+                    </button>
+                </div>
+
+                <!-- View Details Button -->
+                <a href="{% url 'product_detail' product.slug %}" class="btn-neu" style="display: block; text-align: center; text-decoration: none;">
+                    View Full Details
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function closeQuickView() {
+        document.querySelector('.quick-view-modal').remove();
+    }
+
+    function updateQuickViewQuantity(change) {
+        const quantityInput = document.getElementById('quick-view-quantity');
+        let quantity = parseInt(quantityInput.value) + change;
+
+        if (quantity < 1) quantity = 1;
+
+        quantityInput.value = quantity;
+
+        // Update the add-to-cart button with the new quantity
+        document.querySelector('.quick-view-modal .add-to-cart-btn').dataset.quantity = quantity;
+    }
+
+    // Close modal when clicking outside
+    document.querySelector('.quick-view-modal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeQuickView();
+        }
+    });
+</script>
+
+<style>
+    .quick-view-modal {
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+</style>

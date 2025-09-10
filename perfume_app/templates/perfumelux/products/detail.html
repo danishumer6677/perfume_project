@@ -1,0 +1,181 @@
+{% extends 'perfumelux/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <!-- Breadcrumb -->
+    <nav style="margin-bottom: 20px;">
+        <a href="{% url 'home' %}">Home</a> &gt;
+        <a href="{% url 'category_detail' product.category.slug %}">{{ product.category.name }}</a> &gt;
+        <span>{{ product.name }}</span>
+    </nav>
+
+    <div class="neu-outset" style="padding: 30px; border-radius: 20px; margin-bottom: 30px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+            <!-- Product Image -->
+            <div>
+                {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; border-radius: 15px;">
+                {% else %}
+                <div style="width: 100%; height: 400px; background: var(--secondary-color); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                    <span>No Image Available</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Product Info -->
+            <div>
+                <h1 style="margin-bottom: 15px;">{{ product.name }}</h1>
+
+                <!-- Rating -->
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                    <div style="display: flex;">
+                        {% for i in "12345" %}
+                        {% if forloop.counter <= product.avg_rating %}
+                        <span>⭐</span>
+                        {% else %}
+                        <span>☆</span>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    <span>({{ reviews.count }} reviews)</span>
+                </div>
+
+                <!-- Price -->
+                <div style="margin-bottom: 25px;">
+                    <span style="font-size: 24px; font-weight: 700; color: var(--accent-color);">${{ product.price }}</span>
+                </div>
+
+                <!-- Description -->
+                <div style="margin-bottom: 25px;">
+                    <p>{{ product.description }}</p>
+                </div>
+
+                <!-- Add to cart -->
+                <div style="display: flex; gap: 15px; margin-bottom: 30px;">
+                    <div class="neu-outset" style="display: flex; align-items: center; border-radius: 10px; padding: 5px;">
+                        <button onclick="updateQuantity(-1)" style="background: none; border: none; padding: 10px; cursor: pointer;">-</button>
+                        <input type="number" id="quantity" value="1" min="1" style="width: 50px; text-align: center; border: none; background: transparent;">
+                        <button onclick="updateQuantity(1)" style="background: none; border: none; padding: 10px; cursor: pointer;">+</button>
+                    </div>
+                    <button class="btn-primary add-to-cart-btn" data-product-id="{{ product.id }}" style="flex: 1;">
+                        Add to Cart
+                    </button>
+                    <button class="btn-neu wishlist-toggle" data-product-id="{{ product.id }}" style="padding: 15px;">
+                        ❤️
+                    </button>
+                </div>
+
+                <!-- Product details -->
+                <div class="neu-inset" style="padding: 20px; border-radius: 15px;">
+                    <h3 style="margin-bottom: 15px;">Product Details</h3>
+                    <div style="display: grid; grid-template-columns: auto 1fr; gap: 10px 20px;">
+                        <span style="font-weight: 600;">Category:</span>
+                        <span>{{ product.category.name }}</span>
+
+                        <span style="font-weight: 600;">Brand:</span>
+                        <span>{{ product.brand|default:"N/A" }}</span>
+
+                        <span style="font-weight: 600;">Size:</span>
+                        <span>{{ product.size|default:"N/A" }}</span>
+
+                        <span style="font-weight: 600;">In Stock:</span>
+                        <span>{{ product.stock }} available</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="neu-outset" style="padding: 30px; border-radius: 20px; margin-bottom: 30px;">
+        <h2 style="margin-bottom: 25px;">Customer Reviews</h2>
+
+        <!-- Review Form -->
+        {% if user.is_authenticated %}
+        <div style="margin-bottom: 30px;">
+            <h3 style="margin-bottom: 15px;">Write a Review</h3>
+            <form method="POST" action="{% url 'add_review' product.id %}">
+                {% csrf_token %}
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 8px;">Rating</label>
+                    <div style="display: flex; gap: 5px;">
+                        {% for i in "12345" %}
+                        <input type="radio" id="star{{ forloop.counter }}" name="rating" value="{{ forloop.counter }}" {% if forloop.counter == 5 %}checked{% endif %}>
+                        <label for="star{{ forloop.counter }}" style="cursor: pointer; font-size: 24px;">⭐</label>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 8px;">Comment</label>
+                    <textarea name="comment" class="form-control" rows="4" placeholder="Share your experience with this product"></textarea>
+                </div>
+                <button type="submit" class="btn-primary">Submit Review</button>
+            </form>
+        </div>
+        {% else %}
+        <div style="text-align: center; padding: 20px;">
+            <p>Please <a href="{% url 'login' %}">login</a> to leave a review.</p>
+        </div>
+        {% endif %}
+
+        <!-- Reviews List -->
+        <div>
+            {% if reviews %}
+            {% for review in reviews %}
+            <div class="neu-inset" style="padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                    <div>
+                        <strong>{{ review.user.get_full_name|default:review.user.username }}</strong>
+                        <div style="display: flex; margin-top: 5px;">
+                            {% for i in "12345" %}
+                            {% if forloop.counter <= review.rating %}
+                            <span>⭐</span>
+                            {% else %}
+                            <span>☆</span>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <span style="color: #666;">{{ review.created_at|date:"M d, Y" }}</span>
+                </div>
+                <p>{{ review.comment }}</p>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div style="text-align: center; padding: 20px;">
+                <p>No reviews yet. Be the first to review this product!</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    {% if related_products %}
+    <div style="margin-bottom: 30px;">
+        <h2 style="margin-bottom: 25px;">You May Also Like</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 25px;">
+            {% for product in related_products %}
+            {% include 'perfumelux/includes/product_card.html' with product=product %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    function updateQuantity(change) {
+        const quantityInput = document.getElementById('quantity');
+        let quantity = parseInt(quantityInput.value) + change;
+
+        if (quantity < 1) quantity = 1;
+
+        quantityInput.value = quantity;
+
+        // Update all add-to-cart buttons with the new quantity
+        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+            btn.dataset.quantity = quantity;
+        });
+    }
+</script>
+{% endblock %}

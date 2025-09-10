@@ -1,0 +1,68 @@
+{% extends 'perfumelux/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h1 style="margin-bottom: 30px;">Search Results</h1>
+
+    <!-- Search Header -->
+    <div class="neu-outset" style="padding: 25px; border-radius: 20px; margin-bottom: 30px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h2 style="margin-bottom: 10px;">"{{ query }}"</h2>
+                <p style="color: #666;">{{ products.count }} result{{ products.count|pluralize }} found</p>
+            </div>
+
+            <a href="{% url 'product_list' %}" class="btn-neu" style="text-decoration: none;">
+                Browse All Products
+            </a>
+        </div>
+    </div>
+
+    <!-- Search Results -->
+    {% if products %}
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 25px; margin-bottom: 40px;">
+        {% for product in products %}
+        {% include 'perfumelux/includes/product_card.html' with product=product %}
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="neu-outset" style="padding: 60px 30px; text-align: center; border-radius: 20px;">
+        <div style="font-size: 80px; margin-bottom: 20px;">🔍</div>
+        <h2 style="margin-bottom: 15px;">No results found</h2>
+        <p style="margin-bottom: 25px; color: #666;">We couldn't find any products matching "{{ query }}"</p>
+
+        <div style="display: flex; flex-direction: column; gap: 15px; max-width: 400px; margin: 0 auto;">
+            <p style="font-weight: 600;">Suggestions:</p>
+            <ul style="text-align: left; color: #666;">
+                <li>Check your spelling</li>
+                <li>Try more general keywords</li>
+                <li>Try different keywords</li>
+                <li>Browse our categories instead</li>
+            </ul>
+        </div>
+
+        <div style="display: flex; gap: 15px; justify-content: center; margin-top: 30px;">
+            <a href="{% url 'product_list' %}" class="btn-primary">Browse All Products</a>
+            <a href="{% url 'category_list' %}" class="btn-neu">View Categories</a>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Popular Searches -->
+    <div class="neu-outset" style="padding: 30px; border-radius: 20px;">
+        <h2 style="margin-bottom: 25px; text-align: center;">Popular Searches</h2>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;">
+            <a href="{% url 'search' %}?q=men" class="btn-neu" style="text-decoration: none;">Men's Fragrances</a>
+            <a href="{% url 'search' %}?q=women" class="btn-neu" style="text-decoration: none;">Women's Fragrances</a>
+            <a href="{% url 'search' %}?q=summer" class="btn-neu" style="text-decoration: none;">Summer Scents</a>
+            <a href="{% url 'search' %}?q=winter" class="btn-neu" style="text-decoration: none;">Winter Fragrances</a>
+            <a href="{% url 'search' %}?q=luxury" class="btn-neu" style="text-decoration: none;">Luxury Perfumes</a>
+            <a href="{% url 'search' %}?q=floral" class="btn-neu" style="text-decoration: none;">Floral Scents</a>
+            <a href="{% url 'search' %}?q=woody" class="btn-neu" style="text-decoration: none;">Woody Fragrances</a>
+            <a href="{% url 'search' %}?q=citrus" class="btn-neu" style="text-decoration: none;">Citrus Notes</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

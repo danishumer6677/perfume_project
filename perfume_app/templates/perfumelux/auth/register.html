@@ -1,0 +1,420 @@
+{% extends 'perfumelux/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    .register-container {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .register-card {
+        padding: 40px;
+        border-radius: 20px;
+        text-align: center;
+    }
+
+    .register-icon {
+        font-size: 60px;
+        margin-bottom: 20px;
+        color: var(--accent-color);
+    }
+
+    .register-title {
+        margin-bottom: 30px;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-color);
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: var(--text-color);
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 15px;
+        border: none;
+        border-radius: 12px;
+        background: var(--primary-color);
+        box-shadow: inset 5px 5px 10px var(--shadow-dark),
+                    inset -5px -5px 10px var(--shadow-light);
+        color: var(--text-color);
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+
+    .form-input:focus {
+        outline: none;
+        box-shadow: inset 7px 7px 14px var(--shadow-dark),
+                    inset -7px -7px 14px var(--shadow-light);
+    }
+
+    .error-message {
+        color: var(--error-color);
+        margin-top: 5px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .password-requirements {
+        background: var(--primary-color);
+        padding: 15px;
+        border-radius: 12px;
+        margin-top: 10px;
+        text-align: left;
+        box-shadow: inset 3px 3px 6px var(--shadow-dark),
+                    inset -3px -3px 6px var(--shadow-light);
+    }
+
+    .password-requirements h4 {
+        margin-bottom: 10px;
+        color: var(--text-color);
+        font-size: 14px;
+    }
+
+    .requirement {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 5px;
+        font-size: 13px;
+        color: var(--text-muted);
+    }
+
+    .requirement.valid {
+        color: var(--success-color);
+    }
+
+    .register-btn {
+        width: 100%;
+        padding: 16px;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .divider {
+        display: flex;
+        align-items: center;
+        margin: 25px 0;
+        color: var(--text-muted);
+    }
+
+    .divider::before,
+    .divider::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: var(--secondary-color);
+    }
+
+    .divider span {
+        padding: 0 15px;
+    }
+
+    .social-login {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .social-btn {
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        background: var(--primary-color);
+        color: var(--text-color);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 3px 3px 8px var(--shadow-dark),
+                   -3px -3px 8px var(--shadow-light);
+    }
+
+    .social-btn:hover {
+        box-shadow: inset 3px 3px 6px var(--shadow-dark),
+                   inset -3px -3px 6px var(--shadow-light);
+    }
+
+    .login-link {
+        text-align: center;
+        margin-top: 25px;
+        color: var(--text-muted);
+    }
+
+    .login-link a {
+        color: var(--accent-color);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .login-link a:hover {
+        text-decoration: underline;
+    }
+
+    .terms-text {
+        text-align: center;
+        margin-top: 30px;
+        color: var(--text-muted);
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .terms-text a {
+        color: var(--accent-color);
+        text-decoration: none;
+    }
+
+    .terms-text a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+        .register-container {
+            padding: 15px;
+        }
+
+        .register-card {
+            padding: 30px 20px;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .social-login {
+            grid-template-columns: 1fr;
+        }
+
+        .register-title {
+            font-size: 1.8rem;
+        }
+
+        .register-icon {
+            font-size: 50px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .register-card {
+            padding: 25px 15px;
+        }
+
+        .form-input {
+            padding: 12px;
+        }
+
+        .register-btn {
+            padding: 14px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="register-container">
+        <div class="register-card neu-outset">
+            <!-- Header -->
+            <div class="register-icon">👤</div>
+            <h1 class="register-title">Create Your Account</h1>
+
+            <form method="POST" novalidate>
+                {% csrf_token %}
+
+                <!-- Error Messages -->
+                {% if form.non_field_errors %}
+                <div class="notification error" style="margin-bottom: 20px; padding: 15px; border-radius: 12px;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {% for error in form.non_field_errors %}
+                    {{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <!-- Name Fields -->
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">First Name</label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                        <div class="error-message">
+                            <i class="fas fa-exclamation-circle"></i>
+                            {{ form.first_name.errors.0 }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Last Name</label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                        <div class="error-message">
+                            <i class="fas fa-exclamation-circle"></i>
+                            {{ form.last_name.errors.0 }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Email Field -->
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle"></i>
+                        {{ form.email.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Password Field -->
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    {{ form.password1 }}
+                    {% if form.password1.errors %}
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle"></i>
+                        {{ form.password1.errors.0 }}
+                    </div>
+                    {% endif %}
+
+                    <!-- Password Requirements -->
+                    <div class="password-requirements">
+                        <h4>Password must contain:</h4>
+                        <div class="requirement">
+                            <i class="fas fa-circle" style="font-size: 6px;"></i>
+                            At least 8 characters
+                        </div>
+                        <div class="requirement">
+                            <i class="fas fa-circle" style="font-size: 6px;"></i>
+                            Uppercase and lowercase letters
+                        </div>
+                        <div class="requirement">
+                            <i class="fas fa-circle" style="font-size: 6px;"></i>
+                            At least one number
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Confirm Password Field -->
+                <div class="form-group">
+                    <label class="form-label">Confirm Password</label>
+                    {{ form.password2 }}
+                    {% if form.password2.errors %}
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle"></i>
+                        {{ form.password2.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn-primary register-btn">
+                    <i class="fas fa-user-plus"></i>
+                    Create Account
+                </button>
+            </form>
+
+            <!-- Divider -->
+            <div class="divider">
+                <span>Or continue with</span>
+            </div>
+
+            <!-- Social Login -->
+            <div class="social-login">
+                <button type="button" class="social-btn">
+                    <i class="fab fa-google" style="color: #DB4437;"></i>
+                    Google
+                </button>
+                <button type="button" class="social-btn">
+                    <i class="fab fa-facebook" style="color: #4267B2;"></i>
+                    Facebook
+                </button>
+            </div>
+
+            <!-- Login Link -->
+            <div class="login-link">
+                <p>Already have an account?
+                    <a href="{% url 'login' %}">Sign In</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Terms -->
+        <div class="terms-text">
+            <p>By creating an account, you agree to our
+                <a href="{% url 'terms_of_service' %}">Terms of Service</a>,
+                <a href="{% url 'privacy_policy' %}">Privacy Policy</a>, and
+                <a href="{% url 'cookie_policy' %}">Cookie Policy</a>.
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Add styles to form inputs
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add form-input class to all form fields
+        const formInputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="password"]');
+        formInputs.forEach(input => {
+            input.classList.add('form-input');
+        });
+
+        // Add placeholder if not already set
+        const firstNameInput = document.querySelector('input[name="first_name"]');
+        const lastNameInput = document.querySelector('input[name="last_name"]');
+        const emailInput = document.querySelector('input[name="email"]');
+        const password1Input = document.querySelector('input[name="password1"]');
+        const password2Input = document.querySelector('input[name="password2"]');
+
+        if (firstNameInput && !firstNameInput.getAttribute('placeholder')) {
+            firstNameInput.setAttribute('placeholder', 'Enter your first name');
+        }
+        if (lastNameInput && !lastNameInput.getAttribute('placeholder')) {
+            lastNameInput.setAttribute('placeholder', 'Enter your last name');
+        }
+        if (emailInput && !emailInput.getAttribute('placeholder')) {
+            emailInput.setAttribute('placeholder', 'Enter your email address');
+        }
+        if (password1Input && !password1Input.getAttribute('placeholder')) {
+            password1Input.setAttribute('placeholder', 'Create a password');
+        }
+        if (password2Input && !password2Input.getAttribute('placeholder')) {
+            password2Input.setAttribute('placeholder', 'Confirm your password');
+        }
+    });
+</script>
+{% endblock %}

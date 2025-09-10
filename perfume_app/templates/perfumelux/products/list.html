@@ -1,0 +1,120 @@
+{% extends 'perfumelux/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <h1>All Products</h1>
+        <div style="display: flex; gap: 15px; align-items: center;">
+            <span>Sort by:</span>
+            <select id="sort-select" class="form-control" style="width: auto;" onchange="updateSort()">
+                <option value="name" {% if sort == 'name' %}selected{% endif %}>Name</option>
+                <option value="price_low" {% if sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+                <option value="price_high" {% if sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+                <option value="newest" {% if sort == 'newest' %}selected{% endif %}>Newest</option>
+                <option value="rating" {% if sort == 'rating' %}selected{% endif %}>Rating</option>
+            </select>
+        </div>
+    </div>
+
+    <div style="display: flex; gap: 30px;">
+        <!-- Filters sidebar -->
+        <aside class="neu-outset" style="width: 250px; padding: 20px; border-radius: 15px; height: fit-content;">
+            <h3 style="margin-bottom: 20px;">Filters</h3>
+
+            <!-- Categories filter -->
+            <div style="margin-bottom: 25px;">
+                <h4 style="margin-bottom: 15px;">Categories</h4>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <a href="{% url 'product_list' %}" class="btn-neu {% if not selected_category %}active{% endif %}" style="text-align: left; text-decoration: none;">
+                        All Categories
+                    </a>
+                    {% for category in categories %}
+                    <a href="{% url 'product_list' %}?category={{ category.id }}" class="btn-neu {% if selected_category == category.id %}active{% endif %}" style="text-align: left; text-decoration: none;">
+                        {{ category.name }} ({{ category.product_set.count }})
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Price filter -->
+            <div style="margin-bottom: 25px;">
+                <h4 style="margin-bottom: 15px;">Price Range</h4>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <button class="btn-neu" style="text-align: left;">Under $50</button>
+                    <button class="btn-neu" style="text-align: left;">$50 - $100</button>
+                    <button class="btn-neu" style="text-align: left;">$100 - $200</button>
+                    <button class="btn-neu" style="text-align: left;">Over $200</button>
+                </div>
+            </div>
+
+            <!-- Rating filter -->
+            <div>
+                <h4 style="margin-bottom: 15px;">Rating</h4>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <button class="btn-neu" style="text-align: left;">⭐ 4+ Stars</button>
+                    <button class="btn-neu" style="text-align: left;">⭐ 3+ Stars</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Products grid -->
+        <div style="flex: 1;">
+            {% if page_obj %}
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 25px;">
+                {% for product in page_obj %}
+                {% include 'perfumelux/includes/product_card.html' with product=product %}
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            <div style="margin-top: 40px; display: flex; justify-content: center;">
+                <div class="neu-outset" style="display: flex; border-radius: 10px; overflow: hidden;">
+                    {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}{% if query %}&q={{ query }}{% endif %}" class="btn-neu" style="border-radius: 0; text-decoration: none;">&laquo; Previous</a>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <span class="btn-neu active" style="border-radius: 0; background-color: var(--accent-color); color: white;">{{ num }}</span>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <a href="?page={{ num }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}{% if query %}&q={{ query }}{% endif %}" class="btn-neu" style="border-radius: 0; text-decoration: none;">{{ num }}</a>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}{% if query %}&q={{ query }}{% endif %}" class="btn-neu" style="border-radius: 0; text-decoration: none;">Next &raquo;</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% else %}
+            <div class="neu-outset" style="padding: 40px; text-align: center; border-radius: 15px;">
+                <h3>No products found</h3>
+                <p>Try adjusting your search or filter criteria</p>
+                <a href="{% url 'product_list' %}" class="btn-primary" style="margin-top: 20px;">Reset Filters</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    function updateSort() {
+        const sortSelect = document.getElementById('sort-select');
+        const sortValue = sortSelect.value;
+        const url = new URL(window.location.href);
+
+        url.searchParams.set('sort', sortValue);
+        window.location.href = url.toString();
+    }
+</script>
+
+<style>
+    .btn-neu.active {
+        background-color: var(--accent-color);
+        color: white;
+        box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.2),
+                    inset -3px -3px 6px rgba(255, 255, 255, 0.2);
+    }
+</style>
+{% endblock %}

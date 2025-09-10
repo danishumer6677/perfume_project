@@ -1,0 +1,17 @@
+{% if messages %}
+<div class="container" style="margin-bottom: 20px;">
+    {% for message in messages %}
+    <div class="notification {{ message.tags }}" style="position: relative; margin-bottom: 15px; padding: 15px; border-radius: 10px; color: white;">
+        {{ message }}
+        <button onclick="this.parentElement.style.display='none'" style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&times;</button>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+    .notification.success { background: var(--success-color); }
+    .notification.error { background: var(--error-color); }
+    .notification.info { background: var(--accent-color); }
+    .notification.warning { background: var(--warning-color); }
+</style>
+{% endif %}

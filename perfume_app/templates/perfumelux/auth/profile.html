@@ -1,0 +1,138 @@
+{% extends 'perfumelux/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h1 style="margin-bottom: 30px;">My Profile</h1>
+
+    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 30px;">
+        <!-- Sidebar -->
+        <div class="neu-outset" style="border-radius: 20px; padding: 25px; height: fit-content;">
+            <div style="text-align: center; margin-bottom: 25px;">
+                <div class="neu-inset" style="width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 30px;">
+                    👤
+                </div>
+                <h3>{{ user.get_full_name|default:user.username }}</h3>
+                <p style="color: #666;">Member since {{ user.date_joined|date:"M Y" }}</p>
+            </div>
+
+            <nav style="display: grid; gap: 10px;">
+                <a href="{% url 'profile' %}" class="btn-neu active" style="text-align: left; text-decoration: none;">
+                    Profile Overview
+                </a>
+                <a href="{% url 'profile_update' %}" class="btn-neu" style="text-align: left; text-decoration: none;">
+                    Edit Profile
+                </a>
+                <a href="{% url 'order_history' %}" class="btn-neu" style="text-align: left; text-decoration: none;">
+                    Order History
+                </a>
+                <a href="{% url 'wishlist_view' %}" class="btn-neu" style="text-align: left; text-decoration: none;">
+                    Wishlist
+                </a>
+                <a href="{% url 'password_reset' %}" class="btn-neu" style="text-align: left; text-decoration: none;">
+                    Change Password
+                </a>
+                <a href="{% url 'logout' %}" class="btn-neu" style="text-align: left; text-decoration: none; color: var(--error-color);">
+                    Sign Out
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="neu-outset" style="border-radius: 20px; padding: 30px;">
+            <h2 style="margin-bottom: 25px;">Account Overview</h2>
+
+            <div style="display: grid; gap: 25px;">
+                <!-- Personal Information -->
+                <div>
+                    <h3 style="margin-bottom: 15px;">Personal Information</h3>
+                    <div class="neu-inset" style="padding: 20px; border-radius: 15px;">
+                        <div style="display: grid; grid-template-columns: auto 1fr; gap: 15px 30px;">
+                            <span style="font-weight: 600;">Name:</span>
+                            <span>{{ user.get_full_name|default:"Not set" }}</span>
+
+                            <span style="font-weight: 600;">Email:</span>
+                            <span>{{ user.email }}</span>
+
+                            <span style="font-weight: 600;">Phone:</span>
+                            <span>{{ user.phone|default:"Not set" }}</span>
+
+                            <span style="font-weight: 600;">Date of Birth:</span>
+                            <span>{{ user.date_of_birth|date:"M d, Y"|default:"Not set" }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div>
+                    <h3 style="margin-bottom: 15px;">Recent Activity</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                        <div class="neu-inset" style="padding: 20px; border-radius: 15px; text-align: center;">
+                            <div style="font-size: 30px; margin-bottom: 10px;">📦</div>
+                            <p style="font-weight: 600; margin-bottom: 5px;">Total Orders</p>
+                            <p style="color: var(--accent-color); font-size: 24px; font-weight: 700;">
+                                {{ user.order_set.count }}
+                            </p>
+                        </div>
+
+                        <div class="neu-inset" style="padding: 20px; border-radius: 15px; text-align: center;">
+                            <div style="font-size: 30px; margin-bottom: 10px;">❤️</div>
+                            <p style="font-weight: 600; margin-bottom: 5px;">Wishlist Items</p>
+                            <p style="color: var(--accent-color); font-size: 24px; font-weight: 700;">
+                                {% with wishlist=user.wishlist_set.first %}
+                                {{ wishlist.products.count|default:0 }}
+                                {% endwith %}
+                            </p>
+                        </div>
+
+                        <div class="neu-inset" style="padding: 20px; border-radius: 15px; text-align: center;">
+                            <div style="font-size: 30px; margin-bottom: 10px;">⭐</div>
+                            <p style="font-weight: 600; margin-bottom: 5px;">Reviews</p>
+                            <p style="color: var(--accent-color); font-size: 24px; font-weight: 700;">
+                                {{ user.review_set.count }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Orders -->
+                <div>
+                    <h3 style="margin-bottom: 15px;">Recent Orders</h3>
+                    {% with recent_orders=user.order_set.all|slice:":3" %}
+                    {% if recent_orders %}
+                    <div style="display: grid; gap: 15px;">
+                        {% for order in recent_orders %}
+                        <div class="neu-inset" style="padding: 15px; border-radius: 15px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <p style="font-weight: 600; margin-bottom: 5px;">Order #{{ order.id }}</p>
+                                    <p style="color: #666; font-size: 14px;">{{ order.created_at|date:"M d, Y" }}</p>
+                                </div>
+                                <div style="text-align: right;">
+                                    <p style="font-weight: 700; color: var(--accent-color);">${{ order.total_price }}</p>
+                                    <span class="status-badge" style="padding: 3px 10px; border-radius: 15px; font-size: 12px; background:
+                                                {% if order.status == 'delivered' %}var(--success-color)
+                                                {% elif order.status == 'shipped' %}var(--accent-color)
+                                                {% elif order.status == 'processing' %}var(--warning-color)
+                                                {% else %}var(--secondary-color)
+                                                {% endif %}; color: white;">
+                                                {{ order.status|default:"Processing"|title }}
+                                            </span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="neu-inset" style="padding: 30px; text-align: center; border-radius: 15px;">
+                        <p style="color: #666;">No orders yet</p>
+                        <a href="{% url 'product_list' %}" class="btn-primary" style="margin-top: 15px; display: inline-block;">Start Shopping</a>
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

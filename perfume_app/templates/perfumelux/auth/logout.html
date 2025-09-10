@@ -1,0 +1,19 @@
+{% extends 'perfumelux/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div style="max-width: 500px; margin: 0 auto; text-align: center;">
+        <div class="neu-outset" style="padding: 60px 40px; border-radius: 20px;">
+            <div style="font-size: 80px; margin-bottom: 20px;">👋</div>
+            <h1 style="margin-bottom: 15px;">Signed Out</h1>
+            <p style="color: #666; margin-bottom: 30px;">You have been successfully signed out of your account.</p>
+
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <a href="{% url 'login' %}" class="btn-primary">Sign In Again</a>
+                <a href="{% url 'home' %}" class="btn-neu">Go to Homepage</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

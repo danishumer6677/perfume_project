@@ -1,0 +1,62 @@
+{% extends 'perfumelux/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div style="max-width: 400px; margin: 0 auto;">
+        <div class="neu-outset" style="padding: 40px; border-radius: 20px;">
+            <h1 style="text-align: center; margin-bottom: 30px;">Welcome Back</h1>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                <div class="notification error" style="margin-bottom: 20px;">
+                    {% for error in form.non_field_errors %}
+                    {{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Email or Username</label>
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                    <div style="color: var(--error-color); margin-top: 5px; font-size: 14px;">
+                        {{ form.username.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Password</label>
+                    {{ form.password }}
+                    {% if form.password.errors %}
+                    <div style="color: var(--error-color); margin-top: 5px; font-size: 14px;">
+                        {{ form.password.errors.0 }}
+                    </div>
+                    {% endif %}
+
+                    <div style="text-align: right; margin-top: 10px;">
+                        <a href="{% url 'password_reset' %}" style="color: var(--accent-color); text-decoration: none; font-size: 14px;">
+                            Forgot password?
+                        </a>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary" style="width: 100%; padding: 15px; margin-bottom: 20px;">
+                    Sign In
+                </button>
+
+                <div style="text-align: center;">
+                    <p style="color: #666;">Don't have an account?
+                        <a href="{% url 'register' %}" style="color: var(--accent-color); text-decoration: none; font-weight: 600;">
+                            Create one
+                        </a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

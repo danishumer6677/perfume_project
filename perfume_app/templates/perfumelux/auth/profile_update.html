@@ -1,0 +1,85 @@
+{% extends 'perfumelux/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div style="max-width: 600px; margin: 0 auto;">
+        <div class="neu-outset" style="padding: 40px; border-radius: 20px;">
+            <h1 style="text-align: center; margin-bottom: 30px;">Edit Profile</h1>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                <div class="notification error" style="margin-bottom: 20px;">
+                    {% for error in form.non_field_errors %}
+                    {{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600;">First Name</label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                        <div style="color: var(--error-color); margin-top: 5px; font-size: 14px;">
+                            {{ form.first_name.errors.0 }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600;">Last Name</label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                        <div style="color: var(--error-color); margin-top: 5px; font-size: 14px;">
+                            {{ form.last_name.errors.0 }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Email Address</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                    <div style="color: var(--error-color); margin-top: 5px; font-size: 14px;">
+                        {{ form.email.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Phone Number</label>
+                    {{ form.phone }}
+                    {% if form.phone.errors %}
+                    <div style="color: var(--error-color); margin-top: 5px; font-size: 14px;">
+                        {{ form.phone.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Date of Birth</label>
+                    {{ form.date_of_birth }}
+                    {% if form.date_of_birth.errors %}
+                    <div style="color: var(--error-color); margin-top: 5px; font-size: 14px;">
+                        {{ form.date_of_birth.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div style="display: flex; gap: 15px;">
+                    <button type="submit" class="btn-primary" style="flex: 1; padding: 15px;">
+                        Save Changes
+                    </button>
+                    <a href="{% url 'profile' %}" class="btn-neu" style="padding: 15px; text-decoration: none; text-align: center;">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

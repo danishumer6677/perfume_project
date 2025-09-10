@@ -1,0 +1,243 @@
+{% extends 'perfumelux/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="neu-outset" style="padding: 40px; border-radius: 20px;">
+        <!-- Header -->
+        <div style="text-align: center; margin-bottom: 40px;">
+            <h1 style="margin-bottom: 15px;">Frequently Asked Questions</h1>
+            <p style="color: #666; font-size: 18px;">Find answers to common questions about our products and services</p>
+        </div>
+
+        <!-- Search Box -->
+        <div class="neu-inset" style="padding: 20px; border-radius: 15px; margin-bottom: 40px;">
+            <div style="text-align: center;">
+                <h3 style="margin-bottom: 15px;">Can't find what you're looking for?</h3>
+                <div style="display: flex; max-width: 400px; margin: 0 auto;">
+                    <input type="text" placeholder="Search FAQs..." class="form-control" style="border-radius: 10px 0 0 10px;">
+                    <button class="btn-primary" style="border-radius: 0 10px 10px 0;">Search</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Categories -->
+        <div style="margin-bottom: 40px;">
+            <h2 style="margin-bottom: 25px; color: var(--accent-color);">Browse by Category</h2>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px;">
+                <a href="#products" class="btn-neu" style="text-decoration: none; text-align: center; padding: 20px;">Products</a>
+                <a href="#ordering" class="btn-neu" style="text-decoration: none; text-align: center; padding: 20px;">Ordering</a>
+                <a href="#shipping" class="btn-neu" style="text-decoration: none; text-align: center; padding: 20px;">Shipping</a>
+                <a href="#returns" class="btn-neu" style="text-decoration: none; text-align: center; padding: 20px;">Returns</a>
+                <a href="#account" class="btn-neu" style="text-decoration: none; text-align: center; padding: 20px;">Account</a>
+            </div>
+        </div>
+
+        <!-- Products FAQ -->
+        <div id="products" style="margin-bottom: 40px;">
+            <h2 style="margin-bottom: 25px; color: var(--accent-color);">Products</h2>
+
+            <div class="neu-inset" style="padding: 25px; border-radius: 15px;">
+                <div class="faq-item" style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--secondary-color);">
+                    <h4 style="margin-bottom: 10px; cursor: pointer;" onclick="toggleFAQ(this)">How long does perfume last?</h4>
+                    <div class="faq-answer" style="display: none; color: #666; margin-top: 10px;">
+                        <p>Most perfumes last 3-5 years if stored properly in a cool, dark place away from direct sunlight and extreme temperatures. Citrus-based fragrances may have a shorter shelf life of 2-3 years.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--secondary-color);">
+                    <h4 style="margin-bottom: 10px; cursor: pointer;" onclick="toggleFAQ(this)">What's the difference between Eau de Parfum and Eau de Toilette?</h4>
+                    <div class="faq-answer" style="display: none; color: #666; margin-top: 10px;">
+                        <p>Eau de Parfum has a higher concentration of fragrance oils (15-20%) and lasts longer on the skin (6-8 hours). Eau de Toilette has a lower concentration (5-15%) and typically lasts 3-4 hours. EDP is usually more expensive due to the higher concentration.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--secondary-color);">
+                    <h4 style="margin-bottom: 10px; cursor: pointer;" onclick="toggleFAQ(this)">How should I store my fragrances?</h4>
+                    <div class="faq-answer" style="display: none; color: #666; margin-top: 10px;">
+                        <p>Store fragrances in their original boxes in a cool, dark place away from direct sunlight, heat sources, and humidity. Avoid storing in bathrooms where temperature fluctuations can affect the fragrance.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <h4 style="margin-bottom: 10px; cursor: pointer;" onclick="toggleFAQ(this)">Do you offer samples?</h4>
+                    <div class="faq-answer" style="display: none; color: #666; margin-top: 10px;">
+                        <p>Yes! We offer sample sets and individual samples for most of our fragrances. Samples are a great way to test a scent before committing to a full bottle.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ordering FAQ -->
+        <div id="ordering" style="margin-bottom: 40px;">
+            <h2 style="margin-bottom: 25px; color: var(--accent-color);">Ordering</h2>
+
+            <div class="neu-inset" style="padding: 25px; border-radius: 15px;">
+                <div class="faq-item" style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--secondary-color);">
+                    <h4 style="margin-bottom: 10px; cursor: pointer;" onclick="toggleFAQ(this)">How do I place an order?</h4>
+                    <div class="faq-answer" style="display: none; color: #666; margin-top: 10px;">
+                        <p>Simply browse our collection, add items to your cart, and proceed to checkout. You can checkout as a guest or create an account for faster future purchases.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--secondary-color);">
+                    <h4 style="margin-bottom: 10px; cursor: pointer;" onclick="toggleFAQ(this)">What payment methods do you accept?</h4>
+                    <div class="faq-answer" style="display: none; color: #666; margin-top: 10px;">
+                        <p>We accept all major credit cards (Visa, MasterCard, American Express, Discover), PayPal, Apple Pay, and Google Pay.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <h4 style="margin-bottom: 10px; cursor: pointer;" onclick="toggleFAQ(this)">Can I modify or cancel my order?</h4>
+                    <div class="faq-answer" style="display: none; color: #666; margin-top: 10px;">
+                        <p>Orders can be modified or cancelled within 1 hour of placement. After that, they enter our processing system and cannot be changed. Please contact us immediately if you need to make changes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shipping FAQ -->
+        <div id="shipping" style="margin-bottom: 40px;">
+            <h2 style="margin-bottom: 25px; color: var(--accent-color);">Shipping</h2>
+
+            <div class="neu-inset" style="padding: 25px; border-radius: 15px;">
+                <div class="faq-item" style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--secondary-color);">
+                    <h4 style="margin-bottom: 10px; cursor: pointer;" onclick="toggleFAQ(this)">How long does shipping take?</h4>
+                    <div class="faq-answer" style="display: none; color: #666; margin-top: 10px;">
+                        <p>Standard shipping takes 3-5 business days within the US. Express shipping takes 2-3 business days, and next-day delivery is available for orders placed before 2 PM.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--secondary-color);">
+                    <h4 style="margin-bottom: 10px; cursor: pointer;" onclick="toggleFAQ(this)">Do you ship internationally?</h4>
+                    <div class="faq-answer" style="display: none; color: #666; margin-top: 10px;">
+                        <p>Yes, we ship to over 50 countries worldwide. International shipping times vary from 7-21 business days depending on the destination.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <h4 style="margin-bottom: 10px; cursor: pointer;" onclick="toggleFAQ(this)">How is my order packaged?</h4>
+                    <div class="faq-answer" style="display: none; color: #666; margin-top: 10px;">
+                        <p>All orders are carefully packaged in protective boxes with bubble wrap to prevent damage during transit. Fragile items receive extra protection.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Returns FAQ -->
+        <div id="returns" style="margin-bottom: 40px;">
+            <h2 style="margin-bottom: 25px; color: var(--accent-color);">Returns & Exchanges</h2>
+
+            <div class="neu-inset" style="padding: 25px; border-radius: 15px;">
+                <div class="faq-item" style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--secondary-color);">
+                    <h4 style="margin-bottom: 10px; cursor: pointer;" onclick="toggleFAQ(this)">What is your return policy?</h4>
+                    <div class="faq-answer" style="display: none; color: #666; margin-top: 10px;">
+                        <p>We accept returns within 30 days of delivery for unused, unopened products in their original packaging. Used fragrances cannot be returned for health and safety reasons.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--secondary-color);">
+                    <h4 style="margin-bottom: 10px; cursor: pointer;" onclick="toggleFAQ(this)">How do I initiate a return?</h4>
+                    <div class="faq-answer" style="display: none; color: #666; margin-top: 10px;">
+                        <p>Contact our customer service team or use your account portal to initiate a return. We'll provide you with a return label and instructions.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <h4 style="margin-bottom: 10px; cursor: pointer;" onclick="toggleFAQ(this)">How long do refunds take?</h4>
+                    <div class="faq-answer" style="display: none; color: #666; margin-top: 10px;">
+                        <p>Refunds are processed within 5-7 business days after we receive your return. Credit card refunds may take 1-2 billing cycles to appear on your statement.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Account FAQ -->
+        <div id="account">
+            <h2 style="margin-bottom: 25px; color: var(--accent-color);">Account & Support</h2>
+
+            <div class="neu-inset" style="padding: 25px; border-radius: 15px;">
+                <div class="faq-item" style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--secondary-color);">
+                    <h4 style="margin-bottom: 10px; cursor: pointer;" onclick="toggleFAQ(this)">How do I create an account?</h4>
+                    <div class="faq-answer" style="display: none; color: #666; margin-top: 10px;">
+                        <p>Click on "Sign Up" in the top navigation and fill out the registration form. You can also create an account during checkout.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--secondary-color);">
+                    <h4 style="margin-bottom: 10px; cursor: pointer;" onclick="toggleFAQ(this)">I forgot my password. What should I do?</h4>
+                    <div class="faq-answer" style="display: none; color: #666; margin-top: 10px;">
+                        <p>Click on "Forgot Password" on the login page and enter your email address. We'll send you instructions to reset your password.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <h4 style="margin-bottom: 10px; cursor: pointer;" onclick="toggleFAQ(this)">How do I contact customer service?</h4>
+                    <div class="faq-answer" style="display: none; color: #666; margin-top: 10px;">
+                        <p>You can reach us through our <a href="{% url 'contact' %}" style="color: var(--accent-color);">contact form</a>, email at support@perfumelux.com, or phone at 1-800-PERFUME. We're available Monday-Friday 9AM-6PM EST.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="neu-inset" style="padding: 40px; border-radius: 15px; text-align: center; margin-top: 40px;">
+            <h3 style="margin-bottom: 15px;">Still have questions?</h3>
+            <p style="color: #666; margin-bottom: 25px;">Our customer support team is here to help you with any additional questions.</p>
+            <a href="{% url 'contact' %}" class="btn-primary" style="text-decoration: none; margin-right: 15px;">Contact Support</a>
+            <a href="mailto:support@perfumelux.com" class="btn-neu" style="text-decoration: none;">Email Us</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleFAQ(element) {
+        const answer = element.nextElementSibling;
+        const isVisible = answer.style.display === 'block';
+        
+        // Close all other FAQs
+        document.querySelectorAll('.faq-answer').forEach(item => {
+            item.style.display = 'none';
+        });
+        
+        document.querySelectorAll('.faq-item h4').forEach(item => {
+            item.style.color = '';
+        });
+        
+        // Toggle current FAQ
+        if (!isVisible) {
+            answer.style.display = 'block';
+            element.style.color = var('--accent-color');
+        }
+    }
+    
+    // Open FAQ if URL has hash
+    document.addEventListener('DOMContentLoaded', function() {
+        if (window.location.hash) {
+            const targetElement = document.querySelector(window.location.hash);
+            if (targetElement) {
+                targetElement.scrollIntoView();
+                // Open first FAQ in section
+                const firstFAQ = targetElement.nextElementSibling.querySelector('.faq-item h4');
+                if (firstFAQ) {
+                    toggleFAQ(firstFAQ);
+                }
+            }
+        }
+    });
+</script>
+
+<style>
+    .faq-item h4 {
+        transition: color 0.3s ease;
+    }
+    
+    .faq-item h4:hover {
+        color: var(--accent-color);
+    }
+    
+    .faq-answer {
+        transition: all 0.3s ease;
+    }
+</style>
+{% endblock %}

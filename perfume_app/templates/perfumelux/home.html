@@ -1,0 +1,462 @@
+{% extends 'perfumelux/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    /* Hero Section Styles */
+    .hero-section {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg,
+            rgba(138, 79, 255, 0.1) 0%,
+            rgba(209, 217, 230, 0.3) 50%,
+            rgba(230, 233, 239, 0.7) 100%);
+        margin-bottom: 50px;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+
+    .hero-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="perfume-pattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="2" fill="%238a4fff" opacity="0.2"/></pattern></defs><rect x="0" y="0" width="100%" height="100%" fill="url(%23perfume-pattern)"/></svg>');
+        opacity: 0.3;
+    }
+
+    .hero-bottle {
+        font-size: 120px;
+        margin-bottom: 30px;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+
+    /* Section Spacing */
+    .section {
+        margin-bottom: 80px;
+    }
+
+    /* Category Cards */
+    .category-card {
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .category-card:hover {
+        transform: translateY(-8px) scale(1.02);
+    }
+
+    /* Testimonial Styles */
+    .testimonial-card {
+        transition: all 0.3s ease;
+    }
+
+    .testimonial-card:hover {
+        transform: translateY(-5px);
+    }
+
+    /* Instagram Grid */
+    .instagram-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
+
+    .instagram-item {
+        height: 250px;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        transition: all 0.3s ease;
+    }
+
+    .instagram-item:hover {
+        transform: scale(1.05);
+    }
+
+    /* Statistics Section */
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--accent-color);
+        margin-bottom: 10px;
+    }
+
+    /* Featured Brands */
+    .brand-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 30px;
+        align-items: center;
+    }
+
+    .brand-item {
+        padding: 20px;
+        text-align: center;
+        font-weight: 600;
+        color: var(--text-muted);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Full Screen Hero Section -->
+<section class="hero-section">
+    <div class="hero-bg"></div>
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-bottle">🌸</div>
+            <h1 style="font-size: 3.5rem; margin-bottom: 20px; color: var(--text-color); font-weight: 700;">
+                Discover Your Signature Scent
+            </h1>
+            <p style="font-size: 1.4rem; margin-bottom: 40px; color: var(--text-color); line-height: 1.6; opacity: 0.9;">
+                Experience the art of luxury fragrances. Each scent tells a story, creates a memory,
+                and becomes a part of who you are. Explore our curated collection of exquisite perfumes
+                from around the world.
+            </p>
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                <a href="{% url 'product_list' %}" class="btn-primary" style="padding: 18px 35px; font-size: 1.2rem; text-decoration: none;">
+                    <i class="fas fa-shopping-bag"></i> Shop Collection
+                </a>
+                <a href="{% url 'category_list' %}" class="btn-neu" style="padding: 18px 35px; font-size: 1.2rem; text-decoration: none;">
+                    <i class="fas fa-compass"></i> Explore Categories
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <!-- Statistics Section -->
+    <section class="section">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; text-align: center;">
+            <div class="neu-outset" style="padding: 30px; border-radius: 20px;">
+                <div class="stat-number">10K+</div>
+                <p>Happy Customers</p>
+            </div>
+            <div class="neu-outset" style="padding: 30px; border-radius: 20px;">
+                <div class="stat-number">500+</div>
+                <p>Luxury Fragrances</p>
+            </div>
+            <div class="neu-outset" style="padding: 30px; border-radius: 20px;">
+                <div class="stat-number">50+</div>
+                <p>Worldwide Brands</p>
+            </div>
+            <div class="neu-outset" style="padding: 30px; border-radius: 20px;">
+                <div class="stat-number">100%</div>
+                <p>Authentic Products</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brand Story Section -->
+    <!-- Brand Story Section -->
+    <section class="section neu-outset" style="padding: 60px; border-radius: 25px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center;">
+            <div>
+                <h2 style="margin-bottom: 25px; color: var(--accent-color); font-size: 2.2rem;">Crafting Memories Through Scent</h2>
+                <p style="color: var(--text-color); line-height: 1.8; margin-bottom: 25px; font-size: 1.1rem;">
+                    Since 2010, PerfumeLux has been dedicated to curating the world's finest fragrances.
+                    We believe that a great perfume is more than just a scent—it's an expression of personality,
+                    a trigger for memories, and a form of personal art.
+                </p>
+                <p style="color: var(--text-color); line-height: 1.8; margin-bottom: 30px; font-size: 1.1rem;">
+                    Our expert perfumers travel the globe to source rare ingredients and create unique blends
+                    that stand the test of time. Each bottle represents hours of craftsmanship and passion,
+                    meticulously crafted to evoke emotions and create lasting impressions.
+                </p>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <a href="{% url 'about' %}" class="btn-primary" style="text-decoration: none; padding: 15px 30px;">
+                        <i class="fas fa-book-open"></i> Our Story
+                    </a>
+                    <a href="{% url 'contact' %}" class="btn-neu" style="text-decoration: none; padding: 15px 30px;">
+                        <i class="fas fa-phone"></i> Contact Us
+                    </a>
+                </div>
+            </div>
+            <div class="neu-inset" style="padding: 40px; border-radius: 20px; text-align: center;">
+                <div style="font-size: 80px; margin-bottom: 25px; color: var(--accent-color);">🌺</div>
+                <h3 style="margin-bottom: 20px; font-size: 1.5rem;">Why Choose PerfumeLux?</h3>
+                <div style="display: grid; gap: 18px;">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <i class="fas fa-check-circle" style="color: var(--success-color); font-size: 20px;"></i>
+                        <span>100% Authentic Luxury Brands</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <i class="fas fa-check-circle" style="color: var(--success-color); font-size: 20px;"></i>
+                        <span>Expert Curated Collection</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <i class="fas fa-check-circle" style="color: var(--success-color); font-size: 20px;"></i>
+                        <span>Worldwide Shipping</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <i class="fas fa-check-circle" style="color: var(--success-color); font-size: 20px;"></i>
+                        <span>Free Returns & Exchanges</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <i class="fas fa-check-circle" style="color: var(--success-color); font-size: 20px;"></i>
+                        <span>Personal Fragrance Consultation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Featured Categories -->
+    <section class="section">
+        <div style="text-align: center; margin-bottom: 50px;">
+            <h2 style="margin-bottom: 15px; font-size: 2.2rem;">Find Your Fragrance Family</h2>
+            <p style="color: var(--text-muted); font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
+                Discover scents that resonate with your personality and style. Explore our carefully curated categories.
+            </p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+            {% for category in categories %}
+            <a href="{% url 'category_detail' category.slug %}" class="category-card neu-outset"
+               style="display: block; padding: 40px 30px; text-align: center; text-decoration: none; color: inherit; border-radius: 20px;">
+                <div style="font-size: 60px; margin-bottom: 25px; color: var(--accent-color);">
+                    {% if category.name == "Men" %}👔
+                    {% elif category.name == "Women" %}👗
+                    {% elif category.name == "Unisex" %}👥
+                    {% elif category.name == "Floral" %}🌹
+                    {% elif category.name == "Woody" %}🌲
+                    {% elif category.name == "Citrus" %}🍋
+                    {% else %}🌸
+                    {% endif %}
+                </div>
+                <h3 style="margin-bottom: 15px; font-size: 1.4rem;">{{ category.name }}</h3>
+                <p style="color: var(--text-muted); margin-bottom: 20px;">{{ category.product_set.count }} unique scents</p>
+                <span style="color: var(--accent-color); font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    Explore Collection <i class="fas fa-arrow-right"></i>
+                </span>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Featured Brands Section -->
+    <section class="section">
+        <div style="text-align: center; margin-bottom: 40px;">
+            <h2 style="margin-bottom: 15px; font-size: 2.2rem;">Luxury Brands We Love</h2>
+            <p style="color: var(--text-muted); font-size: 1.2rem;">Discover fragrances from the world's most prestigious houses</p>
+        </div>
+        <div class="brand-grid">
+            <div class="brand-item neu-outset" style="border-radius: 15px;">Chanel</div>
+            <div class="brand-item neu-outset" style="border-radius: 15px;">Dior</div>
+            <div class="brand-item neu-outset" style="border-radius: 15px;">Tom Ford</div>
+            <div class="brand-item neu-outset" style="border-radius: 15px;">Creed</div>
+            <div class="brand-item neu-outset" style="border-radius: 15px;">Jo Malone</div>
+            <div class="brand-item neu-outset" style="border-radius: 15px;">Yves Saint Laurent</div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="section">
+        <div style="text-align: center; margin-bottom: 50px;">
+            <h2 style="margin-bottom: 15px; font-size: 2.2rem;">Featured Collection</h2>
+            <p style="color: var(--text-muted); font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
+                Handpicked selections from our luxury fragrance portfolio. New arrivals and exclusive editions.
+            </p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 35px;">
+            {% for product in featured_products %}
+            {% include 'perfumelux/includes/product_card.html' with product=product %}
+            {% endfor %}
+        </div>
+        <div style="text-align: center; margin-top: 50px;">
+            <a href="{% url 'product_list' %}?sort=newest" class="btn-primary" style="text-decoration: none; padding: 15px 40px;">
+                <i class="fas fa-eye"></i> View All New Arrivals
+            </a>
+        </div>
+    </section>
+
+    <!-- Best Selling Products -->
+    <section class="section">
+        <div style="text-align: center; margin-bottom: 50px;">
+            <h2 style="margin-bottom: 15px; font-size: 2.2rem;">Customer Favorites</h2>
+            <p style="color: var(--text-muted); font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
+                Discover why these fragrances are loved by thousands of our customers worldwide.
+            </p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 35px;">
+            {% for product in best_selling_products %}
+            {% include 'perfumelux/includes/product_card.html' with product=product %}
+            {% endfor %}
+        </div>
+        <div style="text-align: center; margin-top: 50px;">
+            <a href="{% url 'product_list' %}?sort=rating" class="btn-primary" style="text-decoration: none; padding: 15px 40px;">
+                <i class="fas fa-star"></i> Shop Best Sellers
+            </a>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section neu-outset" style="padding: 60px; border-radius: 25px;">
+        <div style="text-align: center; margin-bottom: 50px;">
+            <h2 style="margin-bottom: 15px; font-size: 2.2rem;">What Our Customers Say</h2>
+            <p style="color: var(--text-muted); font-size: 1.2rem;">Real experiences from our fragrance community</p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 35px;">
+            <div class="testimonial-card neu-inset" style="padding: 35px; border-radius: 20px;">
+                <div style="display: flex; align-items: center; margin-bottom: 25px;">
+                    <div style="font-size: 45px; margin-right: 20px; color: var(--accent-color);">⭐</div>
+                    <div>
+                        <h4 style="margin-bottom: 5px;">Sarah M.</h4>
+                        <p style="color: var(--text-muted); font-size: 14px;">Verified Customer</p>
+                    </div>
+                </div>
+                <p style="color: var(--text-color); line-height: 1.7; font-style: italic; font-size: 1.1rem;">
+                    "The Rose Noir fragrance is absolutely divine! The scent lasts all day and I receive compliments everywhere I go. The packaging was beautiful and the delivery was incredibly fast."
+                </p>
+            </div>
+
+            <div class="testimonial-card neu-inset" style="padding: 35px; border-radius: 20px;">
+                <div style="display: flex; align-items: center; margin-bottom: 25px;">
+                    <div style="font-size: 45px; margin-right: 20px; color: var(--accent-color);">⭐</div>
+                    <div>
+                        <h4 style="margin-bottom: 5px;">James T.</h4>
+                        <p style="color: var(--text-muted); font-size: 14px;">Verified Customer</p>
+                    </div>
+                </div>
+                <p style="color: var(--text-color); line-height: 1.7; font-style: italic; font-size: 1.1rem;">
+                    "Incredible selection and fast shipping. The customer service team helped me choose the perfect scent for my wife's anniversary gift. She absolutely loved it!"
+                </p>
+            </div>
+
+            <div class="testimonial-card neu-inset" style="padding: 35px; border-radius: 20px;">
+                <div style="display: flex; align-items: center; margin-bottom: 25px;">
+                    <div style="font-size: 45px; margin-right: 20px; color: var(--accent-color);">⭐</div>
+                    <div>
+                        <h4 style="margin-bottom: 5px;">Emily R.</h4>
+                        <p style="color: var(--text-muted); font-size: 14px;">Verified Customer</p>
+                    </div>
+                </div>
+                <p style="color: var(--text-color); line-height: 1.7; font-style: italic; font-size: 1.1rem;">
+                    "The sample program is genius! I tried three different scents before committing to a full bottle. No more blind buying mistakes. Thank you PerfumeLux!"
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recently Viewed -->
+    {% if recently_viewed %}
+    <section class="section">
+        <div style="text-align: center; margin-bottom: 50px;">
+            <h2 style="margin-bottom: 15px; font-size: 2.2rem;">Continue Your Journey</h2>
+            <p style="color: var(--text-muted); font-size: 1.2rem;">Pick up where you left off with your recently viewed items</p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 35px;">
+            {% for product in recently_viewed %}
+            {% include 'perfumelux/includes/product_card.html' with product=product %}
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Value Propositions -->
+    <section class="section">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
+            <div class="neu-outset" style="padding: 40px; border-radius: 20px; text-align: center;">
+                <div style="font-size: 60px; margin-bottom: 25px; color: var(--accent-color);">🚚</div>
+                <h3 style="margin-bottom: 20px;">Free Shipping</h3>
+                <p style="color: var(--text-muted);">On all orders over $50. Fast and reliable delivery worldwide with tracking.</p>
+            </div>
+
+            <div class="neu-outset" style="padding: 40px; border-radius: 20px; text-align: center;">
+                <div style="font-size: 60px; margin-bottom: 25px; color: var(--accent-color);">💎</div>
+                <h3 style="margin-bottom: 20px;">Authentic Products</h3>
+                <p style="color: var(--text-muted);">100% genuine luxury fragrances guaranteed with authenticity certificates.</p>
+            </div>
+
+            <div class="neu-outset" style="padding: 40px; border-radius: 20px; text-align: center;">
+                <div style="font-size: 60px; margin-bottom: 25px; color: var(--accent-color);">❤️</div>
+                <h3 style="margin-bottom: 20px;">Easy Returns</h3>
+                <p style="color: var(--text-muted);">30-day return policy. No questions asked. Your satisfaction is guaranteed.</p>
+            </div>
+
+            <div class="neu-outset" style="padding: 40px; border-radius: 20px; text-align: center;">
+                <div style="font-size: 60px; margin-bottom: 25px; color: var(--accent-color);">👃</div>
+                <h3 style="margin-bottom: 20px;">Expert Advice</h3>
+                <p style="color: var(--text-muted);">Fragrance specialists ready to help you choose the perfect scent for any occasion.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="section neu-outset" style="padding: 60px; text-align: center; border-radius: 25px;
+                background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);">
+        <h2 style="margin-bottom: 20px; font-size: 2.2rem;">Join Our Fragrance Community</h2>
+        <p style="color: var(--text-color); margin-bottom: 40px; font-size: 1.2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+            Be the first to know about new arrivals, exclusive offers, seasonal promotions, and fragrance tips from our experts.
+        </p>
+        <form action="{% url 'newsletter_subscribe' %}" method="POST" style="max-width: 500px; margin: 0 auto;">
+            {% csrf_token %}
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <input type="email" name="email" placeholder="Enter your email address" required
+                       class="form-control" style="padding: 18px; font-size: 1.1rem;">
+                <button type="submit" class="btn-primary" style="padding: 18px; font-size: 1.1rem; border: none;">
+                    <i class="fas fa-paper-plane"></i> Subscribe Now
+                </button>
+            </div>
+        </form>
+        <p style="color: var(--text-muted); margin-top: 25px; font-size: 0.9rem;">
+            By subscribing, you agree to our <a href="{% url 'privacy_policy' %}" style="color: var(--accent-color); text-decoration: none;">Privacy Policy</a>
+            and consent to receive marketing communications.
+        </p>
+    </section>
+
+    <!-- Instagram Feed Preview -->
+    <section class="section">
+        <div style="text-align: center; margin-bottom: 50px;">
+            <h2 style="margin-bottom: 15px; font-size: 2.2rem;">Follow Our Journey</h2>
+            <p style="color: var(--text-muted); font-size: 1.2rem;">Share your #PerfumeLux moments and get featured</p>
+        </div>
+        <div class="instagram-grid">
+            <div class="instagram-item neu-inset">📸</div>
+            <div class="instagram-item neu-inset">✨</div>
+            <div class="instagram-item neu-inset">🌹</div>
+            <div class="instagram-item neu-inset">🌟</div>
+            <div class="instagram-item neu-inset">💫</div>
+            <div class="instagram-item neu-inset">🎁</div>
+        </div>
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="#" class="btn-neu" style="text-decoration: none; padding: 15px 40px;">
+                <i class="fab fa-instagram"></i> Follow on Instagram
+            </a>
+        </div>
+    </section>
+</div>
+
+<script>
+    // Add scroll animation for hero section
+    document.addEventListener('DOMContentLoaded', function() {
+        const heroSection = document.querySelector('.hero-section');
+        if (heroSection) {
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const rate = scrolled * -0.5;
+                heroSection.style.backgroundPosition = `center ${rate}px`;
+            });
+        }
+    });
+</script>
+{% endblock %}

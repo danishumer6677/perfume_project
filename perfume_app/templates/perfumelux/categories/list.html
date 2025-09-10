@@ -1,0 +1,368 @@
+{% extends 'perfumelux/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    .categories-header {
+        text-align: center;
+        margin-bottom: 50px;
+        padding: 40px 20px;
+        border-radius: 20px;
+    }
+
+    .categories-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 30px;
+        margin-bottom: 50px;
+    }
+
+    .category-card {
+        display: flex;
+        flex-direction: column;
+        padding: 35px 30px;
+        text-align: center;
+        text-decoration: none;
+        color: inherit;
+        border-radius: 20px;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+    }
+
+    .category-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 8px 8px 20px var(--shadow-dark),
+                   -8px -8px 20px var(--shadow-light);
+    }
+
+    .category-icon {
+        font-size: 70px;
+        margin-bottom: 25px;
+        transition: transform 0.3s ease;
+        color: var(--accent-color);
+    }
+
+    .category-card:hover .category-icon {
+        transform: scale(1.1);
+    }
+
+    .category-name {
+        margin-bottom: 15px;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--text-color);
+    }
+
+    .category-description {
+        color: var(--text-muted);
+        margin-bottom: 25px;
+        line-height: 1.6;
+        flex-grow: 1;
+    }
+
+    .category-count {
+        padding: 12px 25px;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin: 0 auto;
+    }
+
+    .category-hover {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
+        opacity: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.3s ease;
+        color: white;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .category-card:hover .category-hover {
+        opacity: 0.95;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 80px 40px;
+        border-radius: 20px;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .empty-icon {
+        font-size: 100px;
+        margin-bottom: 30px;
+        color: var(--text-muted);
+        animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .categories-intro {
+        max-width: 800px;
+        margin: 0 auto 40px auto;
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 1.1rem;
+        line-height: 1.7;
+    }
+
+    .category-badge {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        padding: 8px 15px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        background: var(--primary-color);
+        box-shadow: 2px 2px 5px var(--shadow-dark),
+                   -2px -2px 5px var(--shadow-light);
+    }
+
+    /* ✅ Fixed Button Styles to match neumorphic design */
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+
+    .action-btn {
+        padding: 12px 25px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        border: none;
+    }
+
+    .btn-primary {
+        background-color: var(--accent-color);
+        color: white;
+        box-shadow: 5px 5px 10px rgba(138, 79, 255, 0.3),
+                   -5px -5px 10px rgba(138, 79, 255, 0.1);
+    }
+
+    .btn-primary:hover {
+        background-color: var(--accent-hover);
+        box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.2),
+                   inset -5px -5px 10px rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .btn-neu {
+        background: var(--primary-color);
+        color: var(--text-color);
+        box-shadow: 5px 5px 10px var(--shadow-dark),
+                   -5px -5px 10px var(--shadow-light);
+    }
+
+    .btn-neu:hover {
+        box-shadow: inset 5px 5px 10px var(--shadow-dark),
+                   inset -5px -5px 10px var(--shadow-light);
+        transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+        .categories-grid {
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .category-card {
+            padding: 25px 20px;
+        }
+
+        .category-icon {
+            font-size: 60px;
+        }
+
+        .categories-header {
+            padding: 30px 15px;
+            margin-bottom: 30px;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .action-btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .categories-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .empty-state {
+            padding: 50px 20px;
+        }
+
+        .empty-icon {
+            font-size: 80px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Header Section -->
+    <div class="categories-header neu-outset">
+        <div style="font-size: 80px; margin-bottom: 20px; color: var(--accent-color);">🌸</div>
+        <h1 style="margin-bottom: 15px; font-size: 2.5rem;">Fragrance Categories</h1>
+        <p style="color: var(--text-muted); font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
+            Discover your perfect scent by exploring our carefully curated fragrance families
+        </p>
+    </div>
+
+    <!-- Introduction Text -->
+    <div class="categories-intro">
+        <p>Each fragrance category tells a unique story and evokes different emotions.
+            Whether you prefer fresh and citrusy notes or deep and woody aromas,
+            our collection has something for every personality and occasion.</p>
+    </div>
+
+    <!-- Categories Grid -->
+    <div class="categories-grid">
+        {% for category in categories %}
+        <a href="{% url 'category_detail' category.slug %}" class="category-card neu-outset">
+            <!-- Popular Badge -->
+            {% if category.product_set.count > 20 %}
+            <div class="category-badge" style="color: var(--accent-color);">
+                <i class="fas fa-fire"></i> Popular
+            </div>
+            {% elif category.product_set.count < 5 %}
+            <div class="category-badge" style="color: var(--warning-color);">
+                <i class="fas fa-star"></i> New
+            </div>
+            {% endif %}
+
+            <div class="category-icon">
+                {% if category.name == "Men" %}👔
+                {% elif category.name == "Women" %}👗
+                {% elif category.name == "Unisex" %}👥
+                {% elif category.name == "Floral" %}🌹
+                {% elif category.name == "Woody" %}🌲
+                {% elif category.name == "Citrus" %}🍋
+                {% elif category.name == "Oriental" %}🏺
+                {% elif category.name == "Fresh" %}💧
+                {% elif category.name == "Spicy" %}🌶️
+                {% elif category.name == "Gourmand" %}🍰
+                {% else %}🌸
+                {% endif %}
+            </div>
+
+            <h2 class="category-name">{{ category.name }}</h2>
+            <p class="category-description">
+                {{ category.description|default:"Explore our exquisite collection of "|add:category.name|add:" fragrances crafted for the discerning nose." }}
+            </p>
+
+            <div class="category-count neu-inset">
+                <i class="fas fa-cube"></i>
+                {{ category.product_set.count }} product{{ category.product_set.count|pluralize }}
+            </div>
+
+            <div class="category-hover">
+                <span>Explore Collection <i class="fas fa-arrow-right"></i></span>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+
+    <!-- Empty State -->
+    {% if not categories %}
+    <div class="empty-state neu-outset">
+        <div class="empty-icon">📁</div>
+        <h2 style="margin-bottom: 15px; color: var(--text-color);">No Categories Available</h2>
+        <p style="color: var(--text-muted); margin-bottom: 30px; line-height: 1.6;">
+            We're currently updating our fragrance categories. Please check back soon to explore our collections.
+        </p>
+        <div class="action-buttons">
+            <a href="{% url 'product_list' %}" class="action-btn btn-primary">
+                <i class="fas fa-store"></i> Browse All Products
+            </a>
+            <a href="{% url 'home' %}" class="action-btn btn-neu">
+                <i class="fas fa-home"></i> Return Home
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Additional Information -->
+    {% if categories %}
+    <div class="neu-outset" style="padding: 40px; border-radius: 20px; margin-top: 50px; text-align: center;">
+        <h2 style="margin-bottom: 20px; color: var(--accent-color);">Need Help Choosing?</h2>
+        <p style="color: var(--text-muted); margin-bottom: 25px; max-width: 600px; margin-left: auto; margin-right: auto;">
+            Our fragrance experts are here to help you find the perfect scent for any occasion.
+            Whether you're looking for a signature fragrance or a special gift, we've got you covered.
+        </p>
+        <div class="action-buttons">
+            <a href="{% url 'contact' %}" class="action-btn btn-primary">
+                <i class="fas fa-envelope"></i> Contact Our Experts
+            </a>
+            <a href="{% url 'faq' %}" class="action-btn btn-neu">
+                <i class="fas fa-question-circle"></i> Read FAQ
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    // Add animation delay to category cards for staggered effect
+    document.addEventListener('DOMContentLoaded', function() {
+        const categoryCards = document.querySelectorAll('.category-card');
+        categoryCards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+            card.style.opacity = '0';
+            card.style.animation = 'fadeInUp 0.6s ease forwards';
+        });
+    });
+</script>
+
+<style>
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .category-card {
+        animation: fadeInUp 0.6s ease forwards;
+    }
+</style>
+{% endblock %}

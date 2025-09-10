@@ -1,0 +1,39 @@
+<div class="product-card neu-outset" style="border-radius: 15px; overflow: hidden; transition: transform 0.3s ease;">
+    <a href="{% url 'product_detail' product.slug %}" style="text-decoration: none; color: inherit;">
+        <div style="height: 200px; overflow: hidden;">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+            {% else %}
+            <div style="width: 100%; height: 100%; background: var(--secondary-color); display: flex; align-items: center; justify-content: center;">
+                <span>No Image</span>
+            </div>
+            {% endif %}
+        </div>
+        <div style="padding: 15px;">
+            <h3 style="margin-bottom: 10px; font-size: 16px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ product.name }}</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 700; color: var(--accent-color);">${{ product.price }}</span>
+                {% if product.avg_rating %}
+                <div style="display: flex; align-items: center; gap: 5px;">
+                    <span>⭐</span>
+                    <span>{{ product.avg_rating|floatformat:1 }}</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </a>
+    <div style="padding: 0 15px 15px; display: flex; gap: 10px;">
+        <button class="add-to-cart-btn btn-primary" data-product-id="{{ product.id }}" style="flex: 1; padding: 10px;">
+            Add to Cart
+        </button>
+        <button class="wishlist-toggle btn-neu" data-product-id="{{ product.id }}" style="padding: 10px;">
+            ❤️
+        </button>
+    </div>
+</div>
+
+<style>
+    .product-card:hover {
+        transform: translateY(-5px);
+    }
+</style>

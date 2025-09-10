@@ -1,0 +1,185 @@
+{% extends 'perfumelux/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <h1>Order #{{ order.id }}</h1>
+        <a href="{% url 'order_history' %}" class="btn-neu" style="text-decoration: none;">
+            ← Back to Orders
+        </a>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+        <!-- Order Details -->
+        <div>
+            <!-- Order Status -->
+            <div class="neu-outset" style="padding: 25px; border-radius: 20px; margin-bottom: 25px;">
+                <h2 style="margin-bottom: 20px;">Order Status</h2>
+
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px;">
+                    <div style="text-align: center;">
+                        <div class="status-step {% if order.status != 'cancelled' %}active{% endif %}" style="font-size: 30px; margin-bottom: 10px;">📦</div>
+                        <p style="font-weight: 600;">Order Placed</p>
+                        <p style="color: #666; font-size: 14px;">{{ order.created_at|date:"M j" }}</p>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <div class="status-step {% if order.status in ['processing', 'shipped', 'delivered'] %}active{% endif %}" style="font-size: 30px; margin-bottom: 10px;">🔄</div>
+                        <p style="font-weight: 600;">Processing</p>
+                        <p style="color: #666; font-size: 14px;">{% if order.status != 'pending' %}{{ order.updated_at|date:"M j" }}{% endif %}</p>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <div class="status-step {% if order.status in ['shipped', 'delivered'] %}active{% endif %}" style="font-size: 30px; margin-bottom: 10px;">🚚</div>
+                        <p style="font-weight: 600;">Shipped</p>
+                        <p style="color: #666; font-size: 14px;">{% if order.status in ['shipped', 'delivered'] %}{{ order.shipped_date|date:"M j" }}{% endif %}</p>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <div class="status-step {% if order.status == 'delivered' %}active{% endif %}" style="font-size: 30px; margin-bottom: 10px;">✅</div>
+                        <p style="font-weight: 600;">Delivered</p>
+                        <p style="color: #666; font-size: 14px;">{% if order.status == 'delivered' %}{{ order.delivered_date|date:"M j" }}{% endif %}</p>
+                    </div>
+                </div>
+
+                <div class="neu-inset" style="padding: 15px; border-radius: 15px; text-align: center;">
+                    <p style="font-weight: 600; margin-bottom: 5px;">Current Status</p>
+                    <p style="color: var(--accent-color); font-size: 18px; font-weight: 700;">{{ order.status|default:"Processing"|title }}</p>
+                </div>
+            </div>
+
+            <!-- Order Items -->
+            <div class="neu-outset" style="padding: 25px; border-radius: 20px; margin-bottom: 25px;">
+                <h2 style="margin-bottom: 20px;">Order Items</h2>
+
+                {% for item in order.orderitem_set.all %}
+                <div style="display: flex; gap: 20px; padding: 20px; border-bottom: 1px solid var(--secondary-color); align-items: center;">
+                    <div style="width: 80px; height: 80px;">
+                        {% if item.product.image %}
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                        {% else %}
+                        <div style="width: 100%; height: 100%; background: var(--secondary-color); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                            <span>No Image</span>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div style="flex: 1;">
+                        <h3 style="margin-bottom: 5px;"><a href="{% url 'product_detail' item.product.slug %}" style="text-decoration: none; color: inherit;">{{ item.product.name }}</a></h3>
+                        <p style="color: #666; margin-bottom: 10px;">{{ item.product.category.name }}</p>
+                        <p style="font-weight: 700; color: var(--accent-color);">${{ item.price }} × {{ item.quantity }}</p>
+                    </div>
+
+                    <div style="text-align: right;">
+                        <p style="font-weight: 700; font-size: 18px; color: var(--accent-color);">${{ item.get_total }}</p>
+
+                        {% if order.status == 'delivered' %}
+                        <button class="btn-neu" style="margin-top: 10px; padding: 8px 15px;" onclick="location.href='{% url 'product_detail' item.product.slug %}#reviews'">
+                            Review Product
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div>
+            <div class="neu-outset" style="padding: 25px; border-radius: 20px; margin-bottom: 25px;">
+                <h2 style="margin-bottom: 20px;">Order Summary</h2>
+
+                <div style="display: grid; gap: 15px; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Subtotal:</span>
+                        <span>${{ order.total_price }}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Shipping:</span>
+                        <span>$10.00</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Tax:</span>
+                        <span>${{ order.get_tax|default:"0.00" }}</span>
+                    </div>
+                    <hr style="border: none; border-top: 1px solid var(--secondary-color);">
+                    <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: 700;">
+                        <span>Total:</span>
+                        <span>${{ order.get_total_with_tax|default:order.total_price }}</span>
+                    </div>
+                </div>
+
+                {% if order.status == 'delivered' %}
+                <button class="btn-primary" onclick="reorder({{ order.id }})" style="width: 100%; margin-bottom: 15px;">
+                    Reorder All Items
+                </button>
+                {% endif %}
+            </div>
+
+            <!-- Shipping Information -->
+            <div class="neu-outset" style="padding: 25px; border-radius: 20px;">
+                <h2 style="margin-bottom: 20px;">Shipping Information</h2>
+
+                <div class="neu-inset" style="padding: 20px; border-radius: 15px;">
+                    <p style="font-weight: 600; margin-bottom: 10px;">{{ order.first_name }} {{ order.last_name }}</p>
+                    <p style="margin-bottom: 5px;">{{ order.address }}</p>
+                    <p style="margin-bottom: 5px;">{{ order.city }}, {{ order.state }} {{ order.zip_code }}</p>
+                    <p style="margin-bottom: 5px;">{{ order.country }}</p>
+                    <p style="margin-bottom: 5px;">📞 {{ order.phone }}</p>
+                    <p>📧 {{ order.email }}</p>
+                </div>
+
+                {% if order.tracking_number %}
+                <div style="margin-top: 20px;">
+                    <p style="font-weight: 600; margin-bottom: 10px;">Tracking Information</p>
+                    <p style="color: #666; margin-bottom: 10px;">Tracking #: {{ order.tracking_number }}</p>
+                    <a href="#" class="btn-neu" style="text-decoration: none; display: inline-block;">
+                        Track Package
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function reorder(orderId) {
+        fetch(`/orders/${orderId}/reorder/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('All items added to cart!', 'success');
+                // Update cart count
+                const cartCount = document.getElementById('cart-count');
+                if (cartCount) {
+                    cartCount.textContent = data.cart_count;
+                }
+            } else {
+                showNotification('Failed to reorder', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('An error occurred', 'error');
+        });
+    }
+</script>
+
+<style>
+    .status-step {
+        opacity: 0.5;
+        transition: opacity 0.3s ease;
+    }
+    
+    .status-step.active {
+        opacity: 1;
+    }
+</style>
+{% endblock %}

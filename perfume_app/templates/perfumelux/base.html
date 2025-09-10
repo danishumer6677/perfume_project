@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PerfumeLux - Luxury Fragrances for every occasion">
+    <title>{% block title %}PerfumeLux - Luxury Fragrances{% endblock %}</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Neumorphic CSS -->
+    <style>
+        :root {
+            --primary-color: #e6e9ef;
+            --secondary-color: #d1d9e6;
+            --accent-color: #8a4fff;
+            --accent-hover: #783de6;
+            --text-color: #31344b;
+            --text-muted: #6b6f83;
+            --shadow-light: #ffffff;
+            --shadow-dark: #b8bec9;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --error-color: #f44336;
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #2a2d36;
+            --secondary-color: #23262e;
+            --accent-color: #9d6aff;
+            --accent-hover: #8a5ce0;
+            --text-color: #e6e9ef;
+            --text-muted: #a0a4b3;
+            --shadow-light: #363942;
+            --shadow-dark: #1f2128;
+            --success-color: #5cb860;
+            --warning-color: #ffa726;
+            --error-color: #f55c4e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Neumorphic utility classes */
+        .neu-inset {
+            border-radius: 15px;
+            background: var(--primary-color);
+            box-shadow: inset 5px 5px 10px var(--shadow-dark),
+                        inset -5px -5px 10px var(--shadow-light);
+        }
+
+        .neu-outset {
+            border-radius: 15px;
+            background: var(--primary-color);
+            box-shadow: 5px 5px 10px var(--shadow-dark),
+                        -5px -5px 10px var(--shadow-light);
+        }
+
+        .neu-pressed {
+            border-radius: 15px;
+            background: var(--primary-color);
+            box-shadow: inset 5px 5px 10px var(--shadow-dark),
+                        inset -5px -5px 10px var(--shadow-light);
+        }
+
+        .btn-neu {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 15px;
+            background: var(--primary-color);
+            box-shadow: 5px 5px 10px var(--shadow-dark),
+                        -5px -5px 10px var(--shadow-light);
+            color: var(--text-color);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-neu:hover {
+            box-shadow: inset 5px 5px 10px var(--shadow-dark),
+                        inset -5px -5px 10px var(--shadow-light);
+            text-decoration: none;
+        }
+
+        .btn-neu:active {
+            box-shadow: inset 5px 5px 10px var(--shadow-dark),
+                        inset -5px -5px 10px var(--shadow-light);
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: white;
+            box-shadow: 5px 5px 10px rgba(138, 79, 255, 0.3),
+                        -5px -5px 10px rgba(138, 79, 255, 0.1);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.2),
+                        inset -5px -5px 10px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Form elements */
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 15px;
+            background: var(--primary-color);
+            box-shadow: inset 5px 5px 10px var(--shadow-dark),
+                        inset -5px -5px 10px var(--shadow-light);
+            color: var(--text-color);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            box-shadow: inset 7px 7px 14px var(--shadow-dark),
+                        inset -7px -7px 14px var(--shadow-light);
+        }
+
+        /* Layout */
+        main {
+            flex: 1;
+            padding: 40px 0;
+        }
+
+        /* Text utilities */
+        .text-center {
+            text-align: center;
+        }
+
+        .text-muted {
+            color: var(--text-muted);
+        }
+
+        /* Navigation styles */
+        nav a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        nav button {
+            text-decoration: none;
+        }
+
+        /* Loading animation */
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .loading {
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Theme toggle */
+        .theme-toggle {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            border-radius: 15px;
+            background: var(--primary-color);
+            box-shadow: inset 3px 3px 5px var(--shadow-dark),
+                        inset -3px -3px 5px var(--shadow-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 0 5px;
+            transition: var(--transition);
+        }
+
+        .theme-toggle__thumb {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            position: absolute;
+            left: 4px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 10px;
+        }
+
+        [data-theme="dark"] .theme-toggle__thumb {
+            left: 34px;
+        }
+
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            box-shadow: 5px 5px 10px var(--shadow-dark),
+                        -5px -5px 10px var(--shadow-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 999;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            box-shadow: inset 5px 5px 10px var(--shadow-dark),
+                        inset -5px -5px 10px var(--shadow-light);
+            text-decoration: none;
+        }
+
+        /* Skip to content for accessibility */
+        .skip-to-content {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--accent-color);
+            color: white;
+            padding: 8px;
+            z-index: 1000;
+            transition: top 0.3s;
+            text-decoration: none;
+        }
+
+        .skip-to-content:focus {
+            top: 0;
+            text-decoration: none;
+        }
+
+        /* Focus styles for accessibility */
+        button:focus-visible,
+        a:focus-visible,
+        input:focus-visible,
+        select:focus-visible,
+        textarea:focus-visible {
+            outline: 2px solid var(--accent-color);
+            outline-offset: 2px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .btn-neu {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+
+            main {
+                padding: 20px 0;
+            }
+
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 40px;
+                height: 40px;
+            }
+
+            .theme-toggle {
+                width: 50px;
+                height: 25px;
+            }
+
+            .theme-toggle__thumb {
+                width: 19px;
+                height: 19px;
+            }
+
+            [data-theme="dark"] .theme-toggle__thumb {
+                left: 28px;
+            }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+<!-- Skip to content link for accessibility -->
+<a href="#main-content" class="skip-to-content">Skip to content</a>
+
+{% include 'perfumelux/includes/header.html' %}
+
+<main id="main-content">
+    {% include 'perfumelux/includes/messages.html' %}
+    {% block content %}{% endblock %}
+</main>
+
+{% include 'perfumelux/includes/footer.html' %}
+
+<!-- Back to top button -->
+<a href="#" class="back-to-top neu-outset" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+</a>
+
+<!-- JavaScript -->
+<script>
+    // Theme functionality
+    function initTheme() {
+        const themeToggle = document.getElementById('theme-toggle');
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        const savedTheme = localStorage.getItem('theme');
+
+        // Set initial theme
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            if (themeToggle) {
+                themeToggle.setAttribute('aria-checked', savedTheme === 'dark');
+            }
+        } else if (prefersDarkScheme.matches) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            if (themeToggle) {
+                themeToggle.setAttribute('aria-checked', 'true');
+            }
+        }
+
+        // Add event listener to theme toggle
+        if (themeToggle) {
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                this.setAttribute('aria-checked', newTheme === 'dark');
+
+                // Show notification
+                showNotification(`${newTheme.charAt(0).toUpperCase() + newTheme.slice(1)} mode enabled`, 'info');
+            });
+        }
+    }
+
+    // Basic utility functions
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize theme
+        initTheme();
+
+        // Toggle mobile menu
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('active');
+                this.setAttribute('aria-expanded',
+                    this.getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
+            });
+        }
+
+        // Add to cart functionality
+        document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const productId = this.dataset.productId;
+                const quantity = this.dataset.quantity || 1;
+
+                // Add loading state
+                const originalText = this.innerHTML;
+                this.innerHTML = '<span class="loading">Adding...</span>';
+                this.disabled = true;
+
+                fetch('{% url "add_to_cart" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify({
+                        product_id: productId,
+                        quantity: quantity
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update cart count
+                        const cartCount = document.getElementById('cart-count');
+                        if (cartCount) {
+                            cartCount.textContent = data.cart_count;
+                            // Add animation to cart count
+                            cartCount.classList.add('pulse');
+                            setTimeout(() => cartCount.classList.remove('pulse'), 500);
+                        }
+
+                        // Show success message
+                        showNotification('Product added to cart!', 'success');
+                    } else {
+                        showNotification('Failed to add product to cart', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showNotification('An error occurred', 'error');
+                })
+                .finally(() => {
+                    // Restore button state
+                    this.innerHTML = originalText;
+                    this.disabled = false;
+                });
+            });
+        });
+
+        // Toggle wishlist functionality
+        document.querySelectorAll('.wishlist-toggle').forEach(button => {
+            button.addEventListener('click', function() {
+                const productId = this.dataset.productId;
+                const isActive = this.classList.contains('active');
+
+                // Visual feedback
+                this.classList.toggle('active', !isActive);
+
+                fetch('{% url "toggle_wishlist" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify({
+                        product_id: productId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        this.classList.toggle('active', data.is_in_wishlist);
+
+                        if (data.is_in_wishlist) {
+                            showNotification('Added to wishlist!', 'success');
+                        } else {
+                            showNotification('Removed from wishlist', 'info');
+                        }
+                    } else {
+                        // Revert visual state if failed
+                        this.classList.toggle('active', isActive);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Revert visual state on error
+                    this.classList.toggle('active', isActive);
+                });
+            });
+        });
+
+        // Back to top button
+        const backToTopButton = document.querySelector('.back-to-top');
+        if (backToTopButton) {
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    backToTopButton.classList.add('visible');
+                } else {
+                    backToTopButton.classList.remove('visible');
+                }
+            });
+
+            backToTopButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        // Add pulse animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.1); }
+                100% { transform: scale(1); }
+            }
+            .pulse {
+                animation: pulse 0.5s ease;
+            }
+        `;
+        document.head.appendChild(style);
+    });
+
+    // Get CSRF token from cookies
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // Show notification
+    function showNotification(message, type = 'info') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.setAttribute('role', 'alert');
+        notification.setAttribute('aria-live', 'polite');
+        notification.innerHTML = `
+            <span>${message}</span>
+            <button onclick="this.parentElement.remove()" aria-label="Close notification">&times;</button>
+        `;
+
+        // Add styles if not already added
+        if (!document.getElementById('notification-styles')) {
+            const styles = document.createElement('style');
+            styles.id = 'notification-styles';
+            styles.textContent = `
+                .notification {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    padding: 15px 20px;
+                    border-radius: 10px;
+                    color: white;
+                    z-index: 1000;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    min-width: 250px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                    transform: translateX(100%);
+                    transition: transform 0.3s ease;
+                }
+                .notification.success { background: var(--success-color); }
+                .notification.error { background: var(--error-color); }
+                .notification.info { background: var(--accent-color); }
+                .notification.warning { background: var(--warning-color); }
+                .notification.show { transform: translateX(0); }
+                .notification button {
+                    background: none;
+                    border: none;
+                    color: white;
+                    font-size: 20px;
+                    cursor: pointer;
+                    margin-left: 15px;
+                    padding: 0;
+                    width: 24px;
+                    height: 24px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+            `;
+            document.head.appendChild(styles);
+        }
+
+        // Remove any existing notifications
+        document.querySelectorAll('.notification').forEach(el => el.remove());
+
+        // Add to page and animate in
+        document.body.appendChild(notification);
+        setTimeout(() => notification.classList.add('show'), 10);
+
+        // Remove after 3 seconds
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (notification.parentElement) {
+                        notification.remove();
+                    }
+                }, 300);
+            }
+        }, 3000);
+    }
+</script>
+
+{% block extra_js %}{% endblock %}
+</body>
+</html>

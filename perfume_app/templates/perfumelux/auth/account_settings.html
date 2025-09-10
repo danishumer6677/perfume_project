@@ -1,0 +1,164 @@
+{% extends 'perfumelux/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 style="margin-bottom: 30px;">Account Settings</h1>
+
+    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 30px;">
+        <!-- Sidebar -->
+        <div class="neu-outset" style="border-radius: 20px; padding: 25px; height: fit-content;">
+            <nav style="display: grid; gap: 10px;">
+                <a href="{% url 'profile' %}" class="btn-neu" style="text-align: left; text-decoration: none;">
+                    Profile Overview
+                </a>
+                <a href="{% url 'profile_update' %}" class="btn-neu" style="text-align: left; text-decoration: none;">
+                    Edit Profile
+                </a>
+                <a href="{% url 'account_settings' %}" class="btn-neu active" style="text-align: left; text-decoration: none;">
+                    Account Settings
+                </a>
+                <a href="{% url 'password_reset' %}" class="btn-neu" style="text-align: left; text-decoration: none;">
+                    Change Password
+                </a>
+                <a href="{% url 'delete_account' %}" class="btn-neu" style="text-align: left; text-decoration: none; color: var(--error-color);">
+                    Delete Account
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="neu-outset" style="border-radius: 20px; padding: 30px;">
+            <h2 style="margin-bottom: 25px;">Account Preferences</h2>
+
+            <div style="display: grid; gap: 30px;">
+                <!-- Email Preferences -->
+                <div>
+                    <h3 style="margin-bottom: 15px;">Email Preferences</h3>
+                    <div class="neu-inset" style="padding: 20px; border-radius: 15px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <p style="font-weight: 600; margin-bottom: 5px;">Newsletter Subscription</p>
+                                <p style="color: #666;">Receive updates about new products and promotions</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" {% if user.newsletter_subscribed %}checked{% endif %} onchange="toggleNewsletter(this.checked)">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security -->
+                <div>
+                    <h3 style="margin-bottom: 15px;">Security</h3>
+                    <div class="neu-inset" style="padding: 20px; border-radius: 15px;">
+                        <div style="display: grid; gap: 15px;">
+                            <a href="{% url 'password_reset' %}" class="btn-neu" style="text-align: left; text-decoration: none;">
+                                Change Password
+                            </a>
+                            <a href="#" class="btn-neu" style="text-align: left; text-decoration: none;">
+                                Two-Factor Authentication
+                            </a>
+                            <a href="#" class="btn-neu" style="text-align: left; text-decoration: none;">
+                                Login Activity
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data & Privacy -->
+                <div>
+                    <h3 style="margin-bottom: 15px;">Data & Privacy</h3>
+                    <div class="neu-inset" style="padding: 20px; border-radius: 15px;">
+                        <div style="display: grid; gap: 15px;">
+                            <a href="#" class="btn-neu" style="text-align: left; text-decoration: none;">
+                                Download Your Data
+                            </a>
+                            <a href="#" class="btn-neu" style="text-align: left; text-decoration: none;">
+                                Privacy Settings
+                            </a>
+                            <a href="{% url 'delete_account' %}" class="btn-neu" style="text-align: left; text-decoration: none; color: var(--error-color);">
+                                Delete Account
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleNewsletter(subscribed) {
+        fetch('/api/toggle-newsletter/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                subscribed: subscribed
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Newsletter preference updated', 'success');
+            } else {
+                showNotification('Failed to update preference', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('An error occurred', 'error');
+        });
+    }
+</script>
+
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+    
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: var(--secondary-color);
+        transition: .4s;
+        border-radius: 34px;
+    }
+    
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+    
+    input:checked + .slider {
+        background-color: var(--accent-color);
+    }
+    
+    input:checked + .slider:before {
+        transform: translateX(26px);
+    }
+</style>
+{% endblock %}

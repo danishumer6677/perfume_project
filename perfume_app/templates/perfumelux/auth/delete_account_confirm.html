@@ -1,0 +1,55 @@
+{% extends 'perfumelux/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div style="max-width: 600px; margin: 0 auto;">
+        <div class="neu-outset" style="padding: 40px; border-radius: 20px; text-align: center;">
+            <div style="font-size: 80px; margin-bottom: 20px; color: var(--error-color);">⚠️</div>
+            <h1 style="margin-bottom: 20px; color: var(--error-color);">Delete Your Account</h1>
+
+            <div class="neu-inset" style="padding: 25px; border-radius: 15px; margin-bottom: 30px; text-align: left;">
+                <h3 style="margin-bottom: 15px; color: var(--error-color);">This action cannot be undone</h3>
+
+                <p style="color: #666; margin-bottom: 15px; line-height: 1.6;">
+                    Deleting your account will permanently remove:
+                </p>
+
+                <ul style="color: #666; margin-bottom: 20px; padding-left: 20px;">
+                    <li>Your personal information and profile</li>
+                    <li>Your order history</li>
+                    <li>Your wishlist items</li>
+                    <li>Your product reviews</li>
+                    <li>Your shopping cart</li>
+                </ul>
+
+                <p style="color: #666; line-height: 1.6;">
+                    <strong>Note:</strong> Order records may be retained for legal and accounting purposes,
+                    but will be anonymized and disassociated from your account.
+                </p>
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div style="margin-bottom: 25px;">
+                    <label style="display: block; margin-bottom: 10px; font-weight: 600;">
+                        Type "DELETE" to confirm:
+                    </label>
+                    <input type="text" name="confirmation" class="form-control"
+                           placeholder="Type DELETE here" required
+                           style="text-align: center; font-weight: 600;">
+                </div>
+
+                <div style="display: flex; gap: 15px; justify-content: center;">
+                    <button type="submit" class="btn-neu" style="background: var(--error-color); color: white; padding: 15px 30px;">
+                        Permanently Delete Account
+                    </button>
+                    <a href="{% url 'account_settings' %}" class="btn-primary" style="padding: 15px 30px; text-decoration: none;">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
